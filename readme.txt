@@ -48,4 +48,3 @@ ex) ./mongod --dbpath /Users/devsunset/dev/program/mongodb-macos-x86_64-6.0.4/da
 6.MongoDB Database-tools 
 7.MongoDB Compass
 8.MongoDB for VS Code 
-9.
