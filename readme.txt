@@ -53,3 +53,11 @@ test> db.board.remove({title : "post2"})
 test> help 
 test> db.help
 test> db.board.help
+
+test> db.version 
+test> db.getCollection("version")
+
+* MongoDB Data Types
+https://www.mongodb.com/docs/mongodb-shell/reference/data-types/
+https://data-flair.training/blogs/mongodb-data-types/
+
