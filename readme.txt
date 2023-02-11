@@ -61,3 +61,101 @@ test> db.getCollection("version")
 https://www.mongodb.com/docs/mongodb-shell/reference/data-types/
 https://data-flair.training/blogs/mongodb-data-types/
 
+
+# CUD
+* Create
+https://www.mongodb.com/docs/manual/reference/method/db.collection.insert/
+db.board.insert({"title":"post test","content":"content test","date": new Date()})
+
+test> for(i=0 ; i<1000; i++){
+... db.board.insert({"title": "post_"+i,"content":"content_"+i,"date":new Date()})
+... }
+
+* Update 
+https://www.mongodb.com/docs/manual/reference/method/db.collection.update/
+test> var data = db.board.findOne({"title":"post_1"})
+test> print(data)
+{
+  _id: ObjectId("63e74d6879bcc937c523e725"),
+  title: 'post_1',
+  content: 'content_1',
+  date: ISODate("2023-02-11T08:10:16.760Z")
+}
+test> data.content = 'content update test'
+test> delete data.date
+test> print(data)
+{
+  _id: ObjectId("63e74d6879bcc937c523e725"),
+  title: 'post_1',
+  content: 'content update test',
+  date: ISODate("2023-02-11T08:10:16.760Z")
+}
+test> db.board.update({"title":"post_1"},{$set:data},{upsert:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.board.findOne({"title":"post_1"})
+{
+  _id: ObjectId("63e74d6879bcc937c523e725"),
+  title: 'post_1',
+  content: 'content update test',
+  date: ISODate("2023-02-11T08:10:16.760Z")
+}
+test> db.board.update({"title":"post_1"},{$set:{"view":0}},{upsert:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.board.findOne({"title":"post_1"})
+{
+  _id: ObjectId("63e74d6879bcc937c523e725"),
+  title: 'post_1',
+  content: 'content update test',
+  date: ISODate("2023-02-11T08:10:16.760Z"),
+  view: 0
+}
+test> db.board.update({"title":"post_1"},{$inc:{"view":9}},{upsert:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.board.findOne({"title":"post_1"})
+{
+  _id: ObjectId("63e74d6879bcc937c523e725"),
+  title: 'post_1',
+  content: 'content update test',
+  date: ISODate("2023-02-11T08:10:16.760Z"),
+  view: 9
+}
+test> db.board.update({"title":"post_1"},{$push:{"comments":{"comment":"comment","name":"name"}}},{upsert:true})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+test> db.board.findOne({"title":"post_1"})
+{
+  _id: ObjectId("63e74d6879bcc937c523e725"),
+  title: 'post_1',
+  content: 'content update test',
+  date: ISODate("2023-02-11T08:10:16.760Z"),
+  view: 9,
+  comments: [ { comment: 'comment', name: 'name' } ]
+}
+
+* Delete
+https://www.mongodb.com/docs/manual/reference/method/db.collection.remove/
+test> db.board.remove({"title":"post_0"})
+test> db.board.drop()
