@@ -125,6 +125,7 @@ https://github.com/neelabalan/mongodb-sample-dataset
 use sample_mflix
 
 * db.collection.find()
+
 db.movies.find()
 db.movies.findOne()
 db.movies.find({"runtime":65})
@@ -139,8 +140,23 @@ $lte <=
 $gt >
 $gte >= 
 &ne !=
+$in 
+$nin
+$or
+$not
+$mod
+$exists
 
 db.movies.find({"runtime" : {"$gte": 60, "$lte" : 90}})
 released_date = new Date("01/01/1996")
 db.movies.find({"released": {"$lt":released_date}})
 db.movies.find({"runtime" : {"$ne" : "60"}})
+db.movies.find({"type": {"$in": ["movie","series"]}})
+db.movies.find({"type": {"$nin": ["movie"]}})
+db.movies.find({"$or": [{"type":"movie"}, {"year": 1918}]})
+db.movies.find({"$or": [{"type":{"$in": ["movie","series"]}}, {"year": 1918}]})
+db.movies.find({"year": {"$mod": [5,1]}})
+db.movies.find({"year": {"$not": {"$mod": [5,1]}}})
+db.movies.find({"year": null})
+db.movies.find({"month": null})
+db.movies.find({"year": {"$in":[null],"$exists" : true}})
