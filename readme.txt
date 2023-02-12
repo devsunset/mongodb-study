@@ -9,6 +9,9 @@
 
 https://www.mongodb.com
 https://www.mongodb.com/docs/manual/
+https://www.mongodb.com/docs/manual/tutorial/
+
+https://www.mongodbtutorial.org/
 
 https://www.mongodb.com/try/download/community
 https://www.mongodb.com/try/download/shell
