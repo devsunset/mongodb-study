@@ -60,7 +60,6 @@ test> db.getCollection("version")
 https://www.mongodb.com/docs/mongodb-shell/reference/data-types/
 https://data-flair.training/blogs/mongodb-data-types/
 
-
 ########################################################
 # CUD
 * Create
