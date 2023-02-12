@@ -18,7 +18,12 @@ https://www.mongodb.com/try/download/shell
 https://www.mongodb.com/try/download/database-tools
 
 실행 패스 설정
-export PATH="$PATH:/Users/devsunset/dev/program/mongodb-macos-x86_64-6.0.4/bin"
+export PATH="$PATH:/설치경로/mongodb-macos-x86_64-6.0.4/bin"
+cd /설치경로/mongodb-macos-x86_64-6.0.4/bin
+vi startmongo.sh
+설치경로/mongodb-macos-x86_64-6.0.4/bin/mongod --dbpath /설치경로/mongodb-macos-x86_64-6.0.4/data/db
+export PATH="$PATH:/설치경로/mongosh-1.6.2-darwin-x64/bin"
+export PATH="$PATH:/설치경로/mongodb-database-tools-macos-x86_64-100.6.1/bin"
 
 https://www.mongodb.com/products/compass
 https://www.mongodb.com/products/vs-code
