@@ -13,6 +13,9 @@ https://www.mongodb.com/try/download/community
 https://www.mongodb.com/try/download/shell
 https://www.mongodb.com/try/download/database-tools
 
+실행 패스 설정
+export PATH="$PATH:/Users/devsunset/dev/program/mongodb-macos-x86_64-6.0.4/bin"
+
 https://www.mongodb.com/products/compass
 https://www.mongodb.com/products/vs-code
 
@@ -119,3 +122,25 @@ test> db.board.drop()
 
 https://github.com/neelabalan/mongodb-sample-dataset
 
+use sample_mflix
+
+* db.collection.find()
+db.movies.find()
+db.movies.findOne()
+db.movies.find({"runtime":65})
+db.movies.find({"title":"Gourmet Club"})
+db.movies.find({"runtime":65,"title":"Gourmet Club"})
+db.movies.find({},{"runtime":1, "title":1})
+db.movies.find({},{"runtime":1, "title":1, "_id":0})
+
+* 조건
+$lt <
+$lte <=
+$gt >
+$gte >= 
+&ne !=
+
+db.movies.find({"runtime" : {"$gte": 60, "$lte" : 90}})
+released_date = new Date("01/01/1996")
+db.movies.find({"released": {"$lt":released_date}})
+db.movies.find({"runtime" : {"$ne" : "60"}})
