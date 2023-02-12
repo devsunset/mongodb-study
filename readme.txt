@@ -8,6 +8,7 @@
 ### MONGODB
 
 https://www.mongodb.com
+https://www.mongodb.com/docs/manual/
 
 https://www.mongodb.com/try/download/community
 https://www.mongodb.com/try/download/shell
@@ -60,7 +61,6 @@ test> db.getCollection("version")
 
 * MongoDB Data Types
 https://www.mongodb.com/docs/mongodb-shell/reference/data-types/
-https://data-flair.training/blogs/mongodb-data-types/
 
 ########################################################
 # CUD
