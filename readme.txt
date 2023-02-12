@@ -20,7 +20,6 @@ https://www.mongodb.com/products/vs-code
 https://learn.mongodb.com/learning-paths/introduction-to-mongodb
 
 ########################################################
-
 # Baisc 
 1. 문서 -> json 형태 
 2.컬렉션 (스키마 X, 서브 컬렉션) -> 문서의 모음
@@ -62,6 +61,7 @@ https://www.mongodb.com/docs/mongodb-shell/reference/data-types/
 https://data-flair.training/blogs/mongodb-data-types/
 
 
+########################################################
 # CUD
 * Create
 https://www.mongodb.com/docs/manual/reference/method/db.collection.insert/
@@ -115,3 +115,9 @@ test> db.board.update({"title":"post_1"},{$set:data},{upsert:true})
 https://www.mongodb.com/docs/manual/reference/method/db.collection.remove/
 test> db.board.remove({"title":"post_0"})
 test> db.board.drop()
+
+########################################################
+# Query 
+
+https://github.com/neelabalan/mongodb-sample-dataset
+
