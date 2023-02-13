@@ -213,6 +213,24 @@ cursor.forEach(function(x){
 ########################################################
 # 색인 
 
+* ensureIndex & dropIndexes
+db.movies.find({"title":"The Blue Bird"})
+db.movies.ensureIndex({"title":1})
+db.movies.ensureIndex({"title":1}, {"background": true})
+db.movies.ensureIndex({"released":1,"title":1})
+db.movies.ensureIndex({"tomatoes.dvd":1}) 
+db.movies.ensureIndex({"type":1,"year":1},{"name":"index_test"})
+db.movies.ensureIndex({"title":1},{"unique": true})
+db.movies.ensureIndex({"title":1},{"unique": true, "dropDups" : true})
+db.movies.ensureIndex({"title":1,"lastupdated":1},{"unique": true})
+db.movies.dropIndexes({"type":1,"year":1},{"name":"index_test"})
+
+* explain & hint 
+db.movies.find().explain()
+db.movies.find({"title":"The Blue Bird"}).explain()
+db.movies.find({"year":1978, "title":"/.*/"}).explain()
+db.movies.find({"year":1978, "title":"/.*/"}).hint({"title":1}).explain()
+
 ########################################################
 # 집계
 
