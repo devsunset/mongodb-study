@@ -30,6 +30,9 @@ https://www.mongodb.com/products/vs-code
 
 https://learn.mongodb.com/learning-paths/introduction-to-mongodb
 
+- Dummey Data 
+https://github.com/neelabalan/mongodb-sample-dataset
+
 ########################################################
 # Baisc 
 1. 문서 -> json 형태 
@@ -126,9 +129,7 @@ test> db.board.remove({"title":"post_0"})
 test> db.board.drop()
 
 ########################################################
-# Query 
-
-https://github.com/neelabalan/mongodb-sample-dataset
+# 조회 
 
 use sample_mflix
 
@@ -154,6 +155,21 @@ $or
 $not
 $mod
 $exists
+정규표현식
+배열 $all $size
+$slice
+$elemMatch
+$where 
+limit
+skip
+sort
+cursor
+$maxscan
+$min 
+$max
+$hint 
+$explain 
+$snapshot 
 
 db.movies.find({"runtime" : {"$gte": 60, "$lte" : 90}})
 released_date = new Date("01/01/1996")
@@ -168,3 +184,31 @@ db.movies.find({"year": {"$not": {"$mod": [5,1]}}})
 db.movies.find({"year": null})
 db.movies.find({"month": null})
 db.movies.find({"year": {"$in":[null],"$exists" : true}})
+db.movies.find({"title": /Blue/i})
+db.movies.find({"title": /Blue?/i})
+db.movies.find({"countries" : "Italy"},{"countries":1)
+db.movies.find({"countries" : {$all : ["Italy","Spain"]}},{"countries":1)
+db.movies.find({"countries.1" : "Italy"},{"countries":1})
+db.movies.find({"countries" : {"$size":3}},{"countries":1})
+db.movies.find({}, {"cast":{"$slice":1}})
+db.movies.find({}, {"cast":{"$slice":-1}})
+db.movies.find({}, {"cast":{"$slice":[1,2]}})
+db.movies.find({"tomatoes.viewer.rating":3.6})
+db.movies.find({"$where": "this.type+this.year == 'movie1918'"})
+db.movies.find().limit(3)
+db.movies.find().skip(3)
+db.movies.find().sort({"year":1})
+db.movies.find().sort({"year":-1})
+var cursor = db.movies.find();
+cursor.forEach(function(x){
+  print(x.title);
+})
+var cursor = db.movies.find().sort({"released":1}).limit(1).skip(10);
+var cursor = db.movies.find().limit(1).sort({"released":1}).skip(10);
+var cursor = db.movies.find().skip(10).sort({"released":1}).limit(1);
+cursor.forEach(function(x){
+  print(x.title);
+})
+
+########################################################
+# 색인 
