@@ -10,8 +10,22 @@
 https://www.mongodb.com
 https://www.mongodb.com/docs/manual/
 https://www.mongodb.com/docs/manual/tutorial/
+https://learn.mongodb.com/learning-paths/introduction-to-mongodb
+
+  https://www.mongodb.com/try/download/community
+  https://www.mongodb.com/try/download/shell
+  https://www.mongodb.com/try/download/database-tools
+  https://www.mongodb.com/products/compass
+  https://www.mongodb.com/products/vs-code
 
 https://www.mongodbtutorial.org/
+
+- Sample Data 
+https://github.com/neelabalan/mongodb-sample-dataset
+
+########################################################
+# Install 
+https://www.mongodb.com/docs/manual/installation/
 
 https://www.mongodb.com/try/download/community
 https://www.mongodb.com/try/download/shell
@@ -25,16 +39,11 @@ vi startmongo.sh
 export PATH="$PATH:/설치경로/mongosh-1.6.2-darwin-x64/bin"
 export PATH="$PATH:/설치경로/mongodb-database-tools-macos-x86_64-100.6.1/bin"
 
-https://www.mongodb.com/products/compass
-https://www.mongodb.com/products/vs-code
-
-https://learn.mongodb.com/learning-paths/introduction-to-mongodb
-
-- Sample Data 
-https://github.com/neelabalan/mongodb-sample-dataset
-
 ########################################################
 # Baisc 
+https://www.mongodb.com/docs/manual/introduction/
+https://www.mongodb.com/docs/mongodb-shell/
+
 1. 문서 -> json 형태 
 2.컬렉션 (스키마 X, 서브 컬렉션) -> 문서의 모음
 3.데이터베이스 -> 컬렉션을 모아두는 것 
@@ -75,6 +84,8 @@ https://www.mongodb.com/docs/mongodb-shell/reference/data-types/
 
 ########################################################
 # CUD
+https://www.mongodb.com/docs/manual/crud/
+
 * Create
 https://www.mongodb.com/docs/manual/reference/method/db.collection.insert/
 db.board.insert({"title":"post test","content":"content test","date": new Date()})
@@ -130,6 +141,7 @@ test> db.board.drop()
 
 ########################################################
 # 조회 
+https://www.mongodb.com/docs/manual/crud/
 
 use sample_mflix
 
@@ -212,6 +224,9 @@ cursor.forEach(function(x){
 
 ########################################################
 # 색인 
+https://www.mongodb.com/docs/manual/indexes/
+
+use sample_mflix
 
 * ensureIndex & dropIndexes
 db.movies.find({"title":"The Blue Bird"})
@@ -233,6 +248,14 @@ db.movies.find({"year":1978, "title":"/.*/"}).hint({"title":1}).explain()
 
 ########################################################
 # 집계
+https://www.mongodb.com/docs/manual/aggregation/
+
+use sample_mflix
+
+db.movies.count()
+db.movies.count({"type":"movie"})
+db.runCommand({"distinct" : "movies","key":"type"})
+
 
 ########################################################
 # 고급 기능
