@@ -18,8 +18,8 @@ https://learn.mongodb.com/learning-paths/introduction-to-mongodb
   https://www.mongodb.com/products/compass
   https://www.mongodb.com/products/vs-code
 
+- Tutorial 
 https://www.mongodbtutorial.org/
-
 - Sample Data 
 https://github.com/neelabalan/mongodb-sample-dataset
 
@@ -257,6 +257,66 @@ db.movies.count({"type":"movie"})
 db.runCommand({"distinct" : "movies","key":"type"})
 db.movies.aggregate( [ { $group : { _id : "$year" } } ] )
 db.movies.aggregate([{"$group" : {_id:{year:"$year",type:"$type"}, count:{$sum:1}}}, {$sort:{"count":-1}}])
+
+* Map Reduce
+https://coding-start.tistory.com/293
+
+> db.collection.mapReduce(
+    <map>
+    ,<reduce>
+    {
+      out: <collection>
+      ,query:<document>
+      ,sort:<document>
+      ,limit:<number>
+      ,finalize:<function>
+      ,scope:<document>
+      ,jsMode:<boolean>
+      ,verbose:<boolean>
+    }
+  )
+
+> db.orders.insertMany([{
+...      cust_id: "abc123",
+...      ord_date: new Date("Oct 04, 2012"),
+...      status: 'A',
+...      price: 40,
+...      items: [ { sku: "mmm", qty: 5, price: 2.5 },
+...               { sku: "nnn", qty: 5, price: 2.5 } ]
+... },
+... {
+...      cust_id: "abc123",
+...      ord_date: new Date("Oct 04, 2012"),
+...      status: 'A',
+...      price: 25,
+...      items: [ { sku: "mmm", qty: 5, price: 2.5 },
+...               { sku: "nnn", qty: 5, price: 2.5 } ]
+... },
+... {
+...      cust_id: "abc123",
+...      ord_date: new Date("Oct 04, 2012"),
+...      status: 'A',
+...      price: 10,
+...      items: [ { sku: "mmm", qty: 5, price: 2.5 },
+...               { sku: "nnn", qty: 5, price: 2.5 } ]
+... }]);
+ 
+> var mapFunction1 = function() {emit(this.cust_id, this.price)};
+> var reduceFunction1 = function(keyCustId, valuesPrices) {return Array.sum(valuesPrices);};
+> db.orders.mapReduce(mapFunction1,reduceFunction1,{ out: "map_reduce_example"});
+{
+    "result" : "map_reduce_example",
+    "timeMillis" : 47,
+    "counts" : {
+        "input" : 4,
+        "emit" : 4,
+        "reduce" : 1,
+        "output" : 1
+    },
+    "ok" : 1
+}
+> db.map_reduce_example.find()
+{ "_id" : "abc123", "value" : 100 }
 
 
 ########################################################
