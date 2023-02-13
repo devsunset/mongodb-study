@@ -30,7 +30,7 @@ https://www.mongodb.com/products/vs-code
 
 https://learn.mongodb.com/learning-paths/introduction-to-mongodb
 
-- Dummey Data 
+- Sample Data 
 https://github.com/neelabalan/mongodb-sample-dataset
 
 ########################################################
