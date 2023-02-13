@@ -255,6 +255,8 @@ use sample_mflix
 db.movies.count()
 db.movies.count({"type":"movie"})
 db.runCommand({"distinct" : "movies","key":"type"})
+db.movies.aggregate( [ { $group : { _id : "$year" } } ] )
+db.movies.aggregate([{"$group" : {_id:{year:"$year",type:"$type"}, count:{$sum:1}}}, {$sort:{"count":-1}}])
 
 
 ########################################################
