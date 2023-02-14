@@ -414,6 +414,52 @@ mongostat
 mongotop --help
 mongotop
 
+* 보안과 인증 
+https://www.mongodb.com/docs/manual/reference/method/db.createUser/
+
+  db.createUser(user, writeConcern)
+
+  {
+    user: "<name>",
+    pwd: passwordPrompt(),      // Or  "<cleartext password>"
+    customData: { <any information> },
+    roles: [
+      { role: "<role>", db: "<database>" } | "<role>",
+      ...
+    ],
+    authenticationRestrictions: [
+      {
+        clientSource: ["<IP>" | "<CIDR range>", ...],
+        serverAddress: ["<IP>" | "<CIDR range>", ...]
+      },
+      ...
+    ],
+    mechanisms: [ "<SCRAM-SHA-1|SCRAM-SHA-256>", ... ],
+    passwordDigestor: "<server|client>"
+  }
+
+  use test
+  db.createUser( { user: "test",
+                  pwd: passwordPrompt(),  // Or  "<cleartext password>"
+                  customData: { employeeId: 12345 },
+                  roles: [ { role: "clusterAdmin", db: "admin" },
+                            { role: "readAnyDatabase", db: "admin" },
+                            "readWrite"] },
+                { w: "majority" , wtimeout: 5000 } )
+
+  mongod 시작시 --auth 옵션 설정 
+
+  ./mongosh mongodb://localhost:27017 로 접속시 권한 없음 
+
+  mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]
+
+  ./mongosh mongosh mongodb://test:admin123@localhost:27017/test
+
+  ssh 터널링
+
+  mongod --bind_ip localhost 
+  mongod --noscripting
+
 
 ########################################################
 # 복제 
