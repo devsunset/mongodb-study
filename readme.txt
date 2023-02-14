@@ -8,9 +8,6 @@
 ### MONGODB
 
 https://www.mongodb.com
-https://www.mongodb.com/docs/manual/
-https://www.mongodb.com/docs/manual/tutorial/
-https://learn.mongodb.com/learning-paths/introduction-to-mongodb
 
   https://www.mongodb.com/try/download/community
   https://www.mongodb.com/try/download/shell
@@ -19,7 +16,11 @@ https://learn.mongodb.com/learning-paths/introduction-to-mongodb
   https://www.mongodb.com/products/vs-code
 
 - Tutorial 
+https://www.mongodb.com/docs/manual/
+https://www.mongodb.com/docs/manual/tutorial/
+https://learn.mongodb.com/learning-paths/introduction-to-mongodb
 https://www.mongodbtutorial.org/
+
 - Sample Data 
 https://github.com/neelabalan/mongodb-sample-dataset
 
@@ -318,28 +319,41 @@ https://coding-start.tistory.com/293
 > db.map_reduce_example.find()
 { "_id" : "abc123", "value" : 100 }
 
-
 ########################################################
 # 고급 기능
 
 * Database Commands
-https://www.mongodb.com/docs/v4.2/reference/command/
+  https://www.mongodb.com/docs/v4.2/reference/command/
 
-db.listCommands()
+  db.listCommands()
 
 * 제한 컬렉션 
-size 고정 컬렉션  초과시 에이지-아웃 순으로 삭제 후 입력 되는  환형 구조 인덱스가 없음
-입력순으로 조회됨 
+  size 고정 컬렉션  초과시 에이지-아웃 순으로 삭제 후 입력 되는  환형 구조 인덱스가 없음
+  입력순으로 조회됨 
 
-생성 시 설정 
-db.createCollection("limit_collection", {capped: true, size: 3})
+  생성 시 설정 
+  db.createCollection("limit_collection", {capped: true, size: 3})
 
-기존 컬렉션을 변경 
-db.createCollection("limit_collection_change")
-db.runCommand({convertToCapped: "limit_collection_change", size: 3})
+  기존 컬렉션을 변경 
+  db.createCollection("limit_collection_change")
+  db.runCommand({convertToCapped: "limit_collection_change", size: 3})
 
-db.limit_collection.find()
-db.limit_collection.find().sort({"$natural" : -1})
+  db.limit_collection.find()
+  db.limit_collection.find().sort({"$natural" : -1})
+
+  tailable-cursors
+  https://www.mongodb.com/docs/manual/core/tailable-cursors/
+
+* GridFS 
+  $ mongofiles --help
+  $ echo "Hello World" > test.txt
+  $ mongofiles put test.txt
+  $ mongofiles list 
+  $ rm -rf test.txt
+  $ mongofiles get test.txt
+
+  test> db.fs.files.distinct("filename")
+  [ 'test.txt' ]
 
 ########################################################
 # 관리 
