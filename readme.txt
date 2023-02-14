@@ -489,5 +489,155 @@ https://www.mongodb.com/docs/manual/reference/method/db.createUser/
 ########################################################
 # 복제 
 
+* Master & Slave (Master/slave replication is no longer supported)
+mongod --master
+mongod --slave --source master_address
+
+$ mkdir -p ~/dbs/master
+$ ./mongod --dbpath ~/dbs/master --port 10000 --master
+$ mkdir -p ~/dbs/slave  (slave node 12개 이하일때 원활히 동작)
+$ ./mongod --dbpath ~/dbs/slave --port 10001 --slave --source localhost:10000
+  - mogoshell 에서 slave 추가 하는 방법도 있음 
+  use local
+  db.sources.insert({"host" : "localhost:27017"})
+
+* Replica Set 
+https://docs.mongodb.com/manual/replication/ 
+자동 장애 넘김 기능이 있는 Master-Slave 구조 
+Replica Set의 차이점은 여러 마스터 노드를 가진다는 점 
+
+$ mkdir -p ~/dbs/node1 ~/dbs/node2
+$ mongod --dbpath ~/dbs/node1 --port 10001 --replSet test/localhost:10002
+$ mongod --dbpath ~/dbs/node2 --port 10002 --replSet test/localhost:10001
+
+세번째 추가시 
+$ mongod --dbpath ~/dbs/node3 --port 10003 --replSet test/localhost:10001
+or
+$ mongod --dbpath ~/dbs/node3 --port 10003 --replSet test/localhost:10001,dev.local:10002
+
+$ mongosh localhost:10001/admin
+
+rs.initiate( {
+   _id : "test",
+   members: [
+      { _id: 0, host: "localhost:10001" },
+      { _id: 1, host: "localhost:10002" }
+   ]
+})
+
+
+$ mongosh mongodb://localhost:10001
+use test
+ok = {"X": 1, "y": 2}
+db.sample.insertOne(ok)
+
+$ mongosh mongodb://lcoalhost:10002
+use test
+db.getMongo().setReadPref('primaryPreferred')
+db.sample.findOne()
+
+
+
+
+* MongoDB Replica set
+https://www.devkuma.com/docs/mongodb/replication/intro/
+https://hoing.io/archives/4282
+
+  * https://gslabs.tistory.com/131
+  1. 설정 파일에 ReplicaSet 옵션을 추가한다.
+    replication:
+    replSetName: {ReplicaSet이름}
+
+  2. MongoDB 서버 실행 후 Primary 가 될 MongoDB 서버로 접속한다.
+    a. ReplicaSet 초기화한다.
+    rs.initiate();
+
+    b. Primary 이름을 변경한다.
+    conf = rs.conf();
+
+    conf.members[0].host = "IP주소:포트";
+
+    rs.reconfig(conf);
+    참고> MongoDB 는 hostname 을 기본 값으로 사용하기 때문에 문제가 생기는 경우가 있음.
+
+  3. ReplicaSet 멤버를 추가한다.
+    /* 일반 멤버 추가 */
+    rs.add("IP주소:포트");
+    /* Arbiter 멤버 추가 */
+    rs.addArb("IP주소:포트");
+
+
+  4. Delayed 멤버를 설정해야 될 경우
+    conf = rs.conf();
+    conf.members[{멤버번호}].hidden = true;
+    conf.members[{멤버번호}].priority = NumberInt(0);
+    conf.members[{멤버번호}].slaveDelay = NumberLong({지연시간(초)});
+
+    rs.reconfig(conf);
+
+----------------------------------------------------------
+
+  * https://devnot.tistory.com/100
+  1개의 PRIMARY DB 와 N개의 SECONDARY, 1개의 Arbiter 로 구성
+  PRIMARY 는 데이터를 삽입할 메인 SECONDARY 는 PRIMARY 한테 데이터를 받아서 복사하는 DB 
+  Arbiter 는 PRIMARY DB 가 죽었을 시 남은 SECONDARY DB 를 PRIMARY 로 승격시킴
+  여기 replica set 등록하는 멤버 총 개수가 7개(PRIMARY + SECONDARY + Arbiter) 로 제한
+  Arbiter 는 여러개를 등록가능하지만 살아있는것은 오직 1개뿐
+
+  MongoDB replica config 파일
+  (dbPath, logPath, port를 알맞게 변경) 
+  mongod --config mongo.conf 로 실행 
+
+  storage:
+    dbPath: ~/dbs/node1
+
+  systemLog:
+    path: ~/dbs/log/node1/mongo.log
+    logAppend: true
+    destination: file
+    traceAllExceptions: false
+
+  processManagement:
+    fork: true
+
+  replication:
+    replSetName: "devtest"
+
+  security:
+    authorization: enabled
+    keyFile: ~/dbs/config/mongodb.key
+
+  net:
+    bindIp: 0.0.0.0
+    port: 10000
+
+  * Mongo KeyFile 생성 (다른 레플리카 DB 도 같은 keyFile 을 바라보게 파일 복사 후 위치 )
+  https://docs.mongodb.com/manual/tutorial/enforce-keyfile-access-control-in-existing-replica-set/
+  $ cd ~/dbs/config 
+  openssl rand -base64 741 > mongodb.key
+  chmod 600 mongodb.key
+
+  mongosh mongodb://localhost:10000/admin
+
+  rs.initiate( {
+    _id : "devtest",
+    members: [
+        { _id: 0, host: "localhost:10000" },
+        { _id: 1, host: "localhost:10001" },
+        { _id: 2, host: "localhost:10002" }
+    ]
+  })
+
+  hosts 에  127.0.0.1:10000, 127.0.0.1:10001, 127.0.0.1:10002, 127.0.0.1:10003 의 DB 를 연결해놓고
+    Arbiter 를 등록하지 않으면 10000 번이 PRIMARY 인데 죽었을 경우 다른 DB 중 1개가 PRIMARY 로 승격되지 않음
+  -> Arbiter 가 살아있어야지만 나머지 3개중 1개의 DB 를 PRIMARY 로 승격함
+    주의할점 node 추가하기 전에 데이터가 있으면 전부 지워지고 덥어씌어버림
+
+  *replica set 초기화 방법
+  secondary 인 DB 를 초기화하고 싶을 때 DB 를 종료하고 config 폴더에 replica 옵션을 지운후 DB 를 실행
+
+  use local 
+  db.dropDatabase()
+
 ########################################################
 # 샤딩 
