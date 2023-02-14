@@ -368,7 +368,7 @@ https://coding-start.tistory.com/293
   --port 
   --fork 
   --logpath , --logappend 
-  --config 
+  --configExpand
 
   ex) ./mongod --port 27017 --fork --logpath mongodb.log 
 
@@ -391,7 +391,7 @@ https://coding-start.tistory.com/293
     journal:
         enabled: true
 
-  ex) ./mongod --config ~/.mongodb.conf 
+  ex) ./mongod  --configExpand ~/.mongodb.conf 
 
 * MongoDB 중지 
 
@@ -602,7 +602,7 @@ https://hoing.io/archives/4282
 
   MongoDB replica config 파일
   (dbPath, logPath, port를 알맞게 변경) 
-  mongod --config mongo.conf 로 실행 
+  mongod  --configExpand mongo.conf 로 실행 
 
   storage:
     dbPath: ~/dbs/node1
@@ -657,4 +657,20 @@ https://hoing.io/archives/4282
 
 ########################################################
 # 샤딩 
+https://www.mongodb.com/docs/manual/sharding/
+https://www.mongodb.com/docs/manual/reference/program/mongos/m
+
+MongoDB 분산 확장 (데이터를 분할해 다른 서버에 나누어 저장 - 파티션)
+autosharding 제공 
+
+Config servers
+Mongos
+Shard
+
+Shard Keys
+Chunks
+
+https://tmjb.tistory.com/39
+https://chjs93.tistory.com/29
+https://urame.tistory.com/entry/%EB%AA%BD%EA%B3%A0%EB%94%94%EB%B9%84mongodb-%EC%83%A4%EB%93%9Cshard-%EC%84%A4%EC%A0%95
 
