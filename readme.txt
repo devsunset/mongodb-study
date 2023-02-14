@@ -460,6 +460,31 @@ https://www.mongodb.com/docs/manual/reference/method/db.createUser/
   mongod --bind_ip localhost 
   mongod --noscripting
 
+* 백업과 복구 
+  --dbpath 경로의 파일 복사 (서비스 중지 후 복사)
+
+   운영 중에 가능 하나 다른 클라이언트에 영향을 줌 
+  mongodump --help
+  mongodump 
+
+  mongorestore --help
+  mongorestore
+
+  ./mongodump -d test -o backup
+  ./mongorestore -d test --drop backup/test (-d 옵션을 주면 기존 컬렉션 삭제 후 복원 주지  않으면 복원시 기존꺼에 합쳐짐)
+
+  fsync & lock 
+  fsync 운영 중인 데이터 온전하게 복사 
+  use admin
+  db.runCommand({"fsync" : 1 , "lock" : 1}); 
+  db.fsyncLock()
+  백업
+  db.fsyncUnlock()  
+
+  slave backup 
+
+  복구 
+  mongod --repair 
 
 ########################################################
 # 복제 
