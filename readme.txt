@@ -358,6 +358,56 @@ https://coding-start.tistory.com/293
 ########################################################
 # 관리 
 
+* MongoDB 시작
+
+  mongod --help 
+
+  * command line 시작 
+  --dbpath   default : /data/db , C:\data\db
+  --port 
+  --fork 
+  --logpath , --logappend 
+  --config 
+
+  ex) ./mongod --port 27017 --fork --logpath mongodb.log 
+
+  * config 참조 시작 
+  https://www.mongodb.com/docs/manual/reference/configuration-options/
+
+  ex) mongodb.conf (YAML 설정 방식)
+  processManagement:
+    fork: true
+  net:
+    bindIp: localhost
+    port: 27017
+  storage:
+    dbPath: /var/lib/mongo
+  systemLog:
+    destination: file
+    path: "/var/log/mongodb/mongod.log"
+    logAppend: true
+  storage:
+    journal:
+        enabled: true
+
+  ex) ./mongod --config ~/.mongodb.conf 
+
+* MongoDB 중지 
+
+  * SIGINT, SIGTERM 시그널 전송 
+  터미널 창에서 구동하고 있다면 Ctrl-C , MongoDB PID 값이 1234 라면 kill -2 1234 or kill 1234 
+  현재의 작업이나 파일 사전 자겁이 종료할 때까지 대기했다가 모든 연결 닫고 안전하게 종료 
+  kill -9 사용 하면 안됨 위의 처리 없이 바로 종료 
+
+  * shutdown
+  use admin
+  db.shutdownServer()
+     
+* 모니터링 
+db.runCommand({"serverStatus" : 1})
+
+
+
 ########################################################
 # 복제 
 
