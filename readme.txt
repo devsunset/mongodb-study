@@ -404,8 +404,15 @@ https://coding-start.tistory.com/293
   db.shutdownServer()
      
 * 모니터링 
+https://www.mongodb.com/docs/manual/administration/monitoring/
+
 db.runCommand({"serverStatus" : 1})
 
+mongostat --help 
+mongostat 
+
+mongotop --help
+mongotop
 
 
 ########################################################
