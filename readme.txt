@@ -20,6 +20,7 @@ https://www.mongodb.com/docs/manual/
 https://www.mongodb.com/docs/manual/tutorial/
 https://learn.mongodb.com/learning-paths/introduction-to-mongodb
 https://www.mongodbtutorial.org/
+https://wikidocs.net/book/8823
 
 - Sample Data 
 https://github.com/neelabalan/mongodb-sample-dataset
@@ -536,7 +537,22 @@ use test
 db.getMongo().setReadPref('primaryPreferred')
 db.sample.findOne()
 
+* 노드
+standard (투표 참가 , 복제본 O , 주노드가 될수 있음 )
+passive (투표 참가 , 복제본 O , 주노드가 될수 없음 )
+arbiter (투표에만 참가 , 복제본 X , 주노드가 될수 없음 )
 
+standard, passive 의 차이점은 우선순위 차등제 priority 
+priority 0 수동 노드 이며 절대 주 노드가 되지 않음 
+
+local database는 복제 되지 않음 
+
+복제 상태 점검 
+  Master 접속 
+  rs.status()
+  db.printReplicationInfo()
+  Slave 접속 
+  db.printSecondaryReplicationInfo
 
 
 * MongoDB Replica set
